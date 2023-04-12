@@ -10,7 +10,6 @@ export default class InitialDatabaseSeed implements Seeder {
 
     public async run(factory: Factory, connection: Connection): Promise<void> {
 
-
         let url = 'https://swapi.dev/api/species?page=1';
 
         for(;;) {
@@ -20,7 +19,6 @@ export default class InitialDatabaseSeed implements Seeder {
             let results = response.data.results;
 
             const filmsRepository = await connection.getRepository(Film);
-
 
             for (let i = 0; i < results.length; i++) {
 
@@ -33,7 +31,6 @@ export default class InitialDatabaseSeed implements Seeder {
                 const films = await filmsRepository.find({
                     where: film_ids
                 })
-
 
                 let specie_obj = {
                     name: results[i].name,

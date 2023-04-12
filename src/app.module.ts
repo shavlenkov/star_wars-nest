@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppDataSource } from 'data-source'
 
+import { AppDataSource } from 'data-source'
 
 import { PeopleModule } from "./swapi/people/people.module";
 import { PlanetsModule } from "./swapi/planets/planets.module";
@@ -28,7 +28,5 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     AuthModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

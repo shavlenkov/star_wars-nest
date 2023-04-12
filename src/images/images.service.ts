@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
-import {Image} from "./entities/images.entity";
-import {People} from "../swapi/people/entities/people.entity";
+import { Image } from "./entities/images.entity";
+import { People } from "../swapi/people/entities/people.entity";
 
 import * as AWS from "aws-sdk";
 
-import {config} from "dotenv";
+import { config } from "dotenv";
 
 config()
 
@@ -15,6 +15,7 @@ config()
 export class ImagesService {
 
     private s3: AWS.S3;
+
     constructor(
         @InjectRepository(Image)
         private readonly imagesRepository: Repository<Image>,
@@ -24,6 +25,7 @@ export class ImagesService {
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         });
     }
+
     async addImages(newPeople, files: Array<Express.Multer.File>) {
 
         let images_arr = []
@@ -55,6 +57,7 @@ export class ImagesService {
             .add(images);
 
     }
+
     async deleteImages(urls) {
         urls.forEach(async (item) => {
 

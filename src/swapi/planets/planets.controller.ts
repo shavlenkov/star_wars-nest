@@ -27,7 +27,9 @@ import {CommonInterceptor} from "../../interceptors/common.interceptor";
 import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
-import {PlanetsPipe} from "../../pipes/planets/planets.pipe";
+
+import {PlanetExistPipe} from "./pipes/planet-exist.pipe";
+
 @Controller('planets')
 @UseGuards(AuthGuard)
 export class PlanetsController {
@@ -42,7 +44,7 @@ export class PlanetsController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, PlanetsPipe) id) {
+    show(@Param('id', ParseIntPipe, PlanetExistPipe) id) {
         return this.planetsService.findOne(id)
     }
     @Post()
@@ -52,12 +54,12 @@ export class PlanetsController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, PlanetsPipe) id) {
+    remove(@Param('id', ParseIntPipe, PlanetExistPipe) id) {
         return this.planetsService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, PlanetsPipe) id, @Body() updatePlanetDto: UpdatePlanetDto) {
+    edit(@Param('id', ParseIntPipe, PlanetExistPipe) id, @Body() updatePlanetDto: UpdatePlanetDto) {
         return this.planetsService.update(id, updatePlanetDto);
     }
 

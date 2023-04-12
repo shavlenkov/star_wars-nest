@@ -7,6 +7,7 @@ import {Film} from "../../swapi/films/entities/film.entity";
 import {Planet} from "../../swapi/planets/entities/planet.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
+
     public async run(factory: Factory, connection: Connection): Promise<void> {
 
         let url = 'http://swapi.dev/api/planets?page=1';

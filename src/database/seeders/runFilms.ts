@@ -6,6 +6,7 @@ import axios from 'axios';
 import {Film} from "../../swapi/films/entities/film.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
+
     public async run(factory: Factory, connection: Connection): Promise<void> {
 
         let url = 'https://swapi.dev/api/films?page=1';

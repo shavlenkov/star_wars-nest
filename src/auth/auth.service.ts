@@ -1,4 +1,5 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -10,7 +11,9 @@ export class AuthService {
         private usersService: UsersService,
         private jwtService: JwtService
     ) {}
+
     async signIn(username: string, pass: string) {
+
         const user = await this.usersService.findOne(username);
 
         const { password, ...result } = user;
@@ -25,15 +28,14 @@ export class AuthService {
         }
 
     }
-    async signUp(username: string, password: string) {
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+    async signUp(username: string, pass: string) {
+
+        const hashedPassword = await bcrypt.hash(pass, 10);
 
         const newUser = await this.usersService.create(username, hashedPassword);
 
-        const { password, ...result } = newUser;
-
-        const payload = { username: result.username, sub: result.id };
+        const payload = { username: newUser.username, sub: newUser.id };
 
         return {
             access_token: this.jwtService.sign(payload),

@@ -27,7 +27,8 @@ import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
 
-import {StarshipsPipe} from "../../pipes/starships/starships.pipe";
+import {StarshipExistPipe} from "./pipes/starship-exist.pipe";
+
 @Controller('starships')
 @UseGuards(AuthGuard)
 export class StarshipsController {
@@ -42,7 +43,7 @@ export class StarshipsController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, StarshipsPipe) id) {
+    show(@Param('id', ParseIntPipe, StarshipExistPipe) id) {
         return this.starshipsService.findOne(id)
     }
     @Post()
@@ -52,12 +53,12 @@ export class StarshipsController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, StarshipsPipe) id) {
+    remove(@Param('id', ParseIntPipe, StarshipExistPipe) id) {
         return this.starshipsService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, StarshipsPipe) id, @Body() updateStarshipDto: UpdateStarshipDto) {
+    edit(@Param('id', ParseIntPipe, StarshipExistPipe) id, @Body() updateStarshipDto: UpdateStarshipDto) {
         return this.starshipsService.update(id, updateStarshipDto);
     }
 

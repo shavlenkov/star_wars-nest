@@ -26,7 +26,8 @@ import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
 
-import {SpeciesPipe} from "../../pipes/species/species.pipe";
+import {SpecieExistPipe} from "./pipes/specie-exist.pipe";
+
 @Controller('species')
 @UseGuards(AuthGuard)
 export class SpeciesController {
@@ -41,7 +42,7 @@ export class SpeciesController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, SpeciesPipe) id) {
+    show(@Param('id', ParseIntPipe, SpecieExistPipe) id) {
         return this.speciesService.findOne(id)
     }
     @Post()
@@ -51,12 +52,12 @@ export class SpeciesController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, SpeciesPipe) id) {
+    remove(@Param('id', ParseIntPipe, SpecieExistPipe) id) {
         return this.speciesService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, SpeciesPipe) id, @Body() updateSpecieDto: UpdateSpecieDto) {
+    edit(@Param('id', ParseIntPipe, SpecieExistPipe) id, @Body() updateSpecieDto: UpdateSpecieDto) {
         return this.speciesService.update(id, updateSpecieDto);
     }
 

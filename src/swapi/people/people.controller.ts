@@ -27,7 +27,8 @@ import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
 
-import {PeoplePipe} from "../../pipes/people/people.pipe";
+import {PeopleExistPipe} from "./pipes/people-exist.pipe";
+
 @Controller('people')
 @UseGuards(AuthGuard)
 export class PeopleController {
@@ -42,7 +43,7 @@ export class PeopleController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, PeoplePipe) id) {
+    show(@Param('id', ParseIntPipe, PeopleExistPipe) id) {
         return this.peopleService.findOne(id)
     }
     @Post('/')
@@ -57,12 +58,12 @@ export class PeopleController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, PeoplePipe) id) {
+    remove(@Param('id', ParseIntPipe, PeopleExistPipe) id) {
         return this.peopleService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, PeoplePipe) id, @Body() updatePeopleDto: UpdatePeopleDto) {
+    edit(@Param('id', ParseIntPipe, PeopleExistPipe) id, @Body() updatePeopleDto: UpdatePeopleDto) {
         return this.peopleService.update(id, updatePeopleDto);
     }
 

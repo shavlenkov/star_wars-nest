@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
-import {UsersService} from "../../users/users.service";
-import {Roles} from "../../roles/roles.enum";
+import { UsersService } from "../../users/users.service";
 
+import { Roles } from "../../roles/roles.enum";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -16,12 +16,8 @@ export class AdminGuard implements CanActivate {
 
     const user = await this.usersService.findOne(username);
 
-    if(user.role == Roles.ADMIN) {
-      return true
-    } else {
-      return false
-    }
-
+    return user.role == Roles.ADMIN;
 
   }
+
 }

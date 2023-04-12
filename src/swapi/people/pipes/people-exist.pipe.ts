@@ -1,8 +1,9 @@
 import {ArgumentMetadata, Injectable, NotFoundException, PipeTransform} from '@nestjs/common';
-import {PeopleService} from "../../swapi/people/people.service";
+
+import {PeopleService} from "../people.service";
 
 @Injectable()
-export class PeoplePipe implements PipeTransform {
+export class PeopleExistPipe implements PipeTransform {
   constructor(private readonly peopleService: PeopleService) {}
   async transform(id: number, metadata: ArgumentMetadata) {
 

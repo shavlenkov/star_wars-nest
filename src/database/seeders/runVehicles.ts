@@ -7,6 +7,7 @@ import {Vehicle} from "../../swapi/vehicles/entities/vehicle.entity";
 import {Film} from "../../swapi/films/entities/film.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
+
     public async run(factory: Factory, connection: Connection): Promise<void> {
 
         let url = 'https://swapi.dev/api/vehicles?page=1';
@@ -18,7 +19,6 @@ export default class InitialDatabaseSeed implements Seeder {
             let response = await axios.get(url);
 
             let results = response.data.results;
-
 
             for (let i = 0; i < results.length; i++) {
 
@@ -70,9 +70,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
             url = response.data.next;
 
-
         }
-
 
     }
 

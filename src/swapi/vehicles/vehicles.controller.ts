@@ -27,7 +27,8 @@ import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
 
-import {VehiclesPipe} from "../../pipes/vehicles/vehicles.pipe";
+import {VehicleExistPipe} from "./pipes/vehicle-exist.pipe";
+
 @Controller('vehicles')
 @UseGuards(AuthGuard)
 export class VehiclesController {
@@ -42,7 +43,7 @@ export class VehiclesController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, VehiclesPipe) id) {
+    show(@Param('id', ParseIntPipe, VehicleExistPipe) id) {
         return this.vehiclesService.findOne(id)
     }
     @Post()
@@ -52,12 +53,12 @@ export class VehiclesController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, VehiclesPipe) id) {
+    remove(@Param('id', ParseIntPipe, VehicleExistPipe) id) {
         return this.vehiclesService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, VehiclesPipe) id, @Body() updateVehicleDto: UpdateVehicleDto) {
+    edit(@Param('id', ParseIntPipe, VehicleExistPipe) id, @Body() updateVehicleDto: UpdateVehicleDto) {
         return this.vehiclesService.update(id, updateVehicleDto);
     }
 

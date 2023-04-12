@@ -27,7 +27,8 @@ import {AuthGuard} from "../../auth/auth.guard";
 import {AdminGuard} from "../../guards/admin/admin.guard";
 import {UserGuard} from "../../guards/user/user.guard";
 
-import {FilmsPipe} from "../../pipes/films/films.pipe";
+import {FilmExistPipe} from "./pipes/film-exist.pipe";
+
 @Controller('films')
 @UseGuards(AuthGuard)
 export class FilmsController {
@@ -42,7 +43,7 @@ export class FilmsController {
     }
     @Get('/:id')
     @UseGuards(UserGuard)
-    show(@Param('id', ParseIntPipe, FilmsPipe) id) {
+    show(@Param('id', ParseIntPipe, FilmExistPipe) id) {
         return this.filmsService.findOne(id)
     }
     @Post()
@@ -52,12 +53,12 @@ export class FilmsController {
     }
     @Delete('/:id')
     @UseGuards(AdminGuard)
-    remove(@Param('id', ParseIntPipe, FilmsPipe) id) {
+    remove(@Param('id', ParseIntPipe, FilmExistPipe) id) {
         return this.filmsService.delete(id);
     }
     @Patch('/:id')
     @UseGuards(AdminGuard)
-    edit(@Param('id', ParseIntPipe, FilmsPipe) id, @Body() updateFilmDto: UpdateFilmDto) {
+    edit(@Param('id', ParseIntPipe, FilmExistPipe) id, @Body() updateFilmDto: UpdateFilmDto) {
         return this.filmsService.update(id, updateFilmDto);
     }
 
