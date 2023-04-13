@@ -1,6 +1,6 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {In, Repository} from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import {
     paginate,
@@ -8,12 +8,13 @@ import {
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
-import {Vehicle} from "./entities/vehicle.entity";
+import { Vehicle } from "./entities/vehicle.entity";
 
-import {CreateVehicleDto} from "./dto/create-vehicle.dto";
-import {UpdateVehicleDto} from "./dto/update-vehicle.dto";
+import { CreateVehicleDto } from "./dto/create-vehicle.dto";
+import { UpdateVehicleDto } from "./dto/update-vehicle.dto";
 
-import {Film} from "../films/entities/film.entity";
+import { Film } from "../films/entities/film.entity";
+
 @Injectable()
 export class VehiclesService {
     constructor(
@@ -22,11 +23,13 @@ export class VehiclesService {
         @InjectRepository(Film)
         private readonly filmsRepository: Repository<Film>,
     ) {}
+
     paginate(options: IPaginationOptions): Promise<Pagination<Vehicle>> {
         return paginate<Vehicle>(this.vehiclesRepository, options, {
             relations: ['pilots', 'films']
         });
     }
+
     async findOne(id: number) {
         let vehicle = await this.vehiclesRepository.findOne({
             where: {
@@ -37,6 +40,7 @@ export class VehiclesService {
 
         return vehicle;
     }
+
     async store(data: CreateVehicleDto) {
         let vehicle = await this.vehiclesRepository.create(data);
 
@@ -48,7 +52,9 @@ export class VehiclesService {
 
         vehicle.films = films;
 
-        return this.vehiclesRepository.save(data);
+        await this.vehiclesRepository.save(data);
+
+        return true;
     }
     async update(id: number, data: UpdateVehicleDto) {
 
@@ -64,19 +70,13 @@ export class VehiclesService {
 
         await this.vehiclesRepository.save(starship)
 
-        return 'ok';
+        return true;
     }
     async delete(id: number) {
 
-        let vehicle = await this.vehiclesRepository.findOne({
-            where: {
-                id: id
-            }
-        })
-
         await this.vehiclesRepository.delete(id);
 
-        return 'ok';
+        return true;
 
     }
 

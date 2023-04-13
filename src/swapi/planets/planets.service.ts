@@ -1,6 +1,6 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {In, Repository} from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Planet } from './entities/planet.entity';
 
 import {
@@ -9,9 +9,9 @@ import {
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
-import {CreatePlanetDto} from "./dto/create-planet.dto";
-import {UpdatePlanetDto} from "./dto/update-planet.dto";
-import {Film} from "../films/entities/film.entity";
+import { CreatePlanetDto } from "./dto/create-planet.dto";
+import { UpdatePlanetDto } from "./dto/update-planet.dto";
+import { Film } from "../films/entities/film.entity";
 
 @Injectable()
 export class PlanetsService {
@@ -50,8 +50,11 @@ export class PlanetsService {
 
         planet.films = films;
 
-        return this.planetsRepository.save(planet);
+        await this.planetsRepository.save(planet);
+
+        return true;
     }
+
     async update(id: number, data: UpdatePlanetDto) {
 
         let planet = await this.planetsRepository.findOne({where: {id: id}, relations: ['films']});
@@ -66,21 +69,15 @@ export class PlanetsService {
 
         await this.planetsRepository.save(planet);
 
-        return 'ok';
+        return true;
 
     }
-    async delete(id: number) {
 
-        let planet = await this.planetsRepository.findOne({
-            where: {
-                id: id
-            },
-            relations: ['films'],
-        });
+    async delete(id: number) {
 
         await this.planetsRepository.delete(id);
 
-        return 'ok';
+        return true;
 
     }
 

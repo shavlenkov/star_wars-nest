@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateFilmDto {
+
     @IsNotEmpty()
     title: string;
 
@@ -28,4 +29,5 @@ export class UpdateFilmDto {
 
     @IsNotEmpty()
     url: string;
+
 }

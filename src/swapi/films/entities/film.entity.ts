@@ -1,13 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
-import {People} from "../../people/entities/people.entity";
-import {Specie} from "../../species/entities/specie.entity";
-import {Planet} from "../../planets/entities/planet.entity";
-import {Starship} from "../../starships/entities/starship.entity";
-import {Vehicle} from "../../vehicles/entities/vehicle.entity";
+import { People } from "../../people/entities/people.entity";
+import { Specie } from "../../species/entities/specie.entity";
+import { Planet } from "../../planets/entities/planet.entity";
+import { Starship } from "../../starships/entities/starship.entity";
+import { Vehicle } from "../../vehicles/entities/vehicle.entity";
 
 @Entity('films')
 export class Film {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -52,4 +53,5 @@ export class Film {
 
     @ManyToMany(() => Vehicle, (vehicle) => vehicle.films)
     vehicles: Vehicle[]
+
 }

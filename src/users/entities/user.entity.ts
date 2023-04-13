@@ -4,6 +4,7 @@ import { Roles } from "../../roles/roles.enum";
 
 @Entity('users')
 export class User {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -15,5 +16,6 @@ export class User {
 
     @Column({ type: 'enum', enum: Roles })
     role: Roles;
+
 }
 

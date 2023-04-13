@@ -1,45 +1,56 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 
-import {Planet} from "../../planets/entities/planet.entity";
-import {Film} from "../../films/entities/film.entity";
-import {Vehicle} from "../../vehicles/entities/vehicle.entity";
-import {Specie} from "../../species/entities/specie.entity";
-import {Starship} from "../../starships/entities/starship.entity";
-import {Image} from "../../../images/entities/images.entity";
+import { Planet } from "../../planets/entities/planet.entity";
+import { Film } from "../../films/entities/film.entity";
+import { Vehicle } from "../../vehicles/entities/vehicle.entity";
+import { Specie } from "../../species/entities/specie.entity";
+import { Starship } from "../../starships/entities/starship.entity";
+import { Image } from "../../../images/entities/images.entity";
 
 @Entity('people')
 export class People {
     @PrimaryGeneratedColumn()
     id: number;
+
     @Column()
     name: string;
+
     @Column()
     height: string;
+
     @Column()
     mass: string;
+
     @Column()
     hair_color: string;
+
     @Column()
     skin_color: string;
+
     @Column()
     eye_color: string;
+
     @Column()
     birth_year: string;
+
     @Column()
     gender: string;
+
     @Column()
     created: string;
+
     @Column()
     edited: string;
+
     @Column()
     url: string;
 
+    @JoinColumn()
     @ManyToOne(() => Planet, (planet) => planet.residents, {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         cascade: true,
     })
-    @JoinColumn()
     homeworld: Planet;
 
     @JoinTable({name: 'people_films'})
@@ -81,4 +92,5 @@ export class People {
         cascade: true,
     })
     images: Image[]
+
 }

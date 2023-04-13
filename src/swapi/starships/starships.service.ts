@@ -1,6 +1,6 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {In, Repository} from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import {
     paginate,
@@ -8,12 +8,12 @@ import {
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
-import {Starship} from "./entities/starship.entity";
+import { Starship } from "./entities/starship.entity";
 
-import {CreateStarshipDto} from "./dto/create-starship.dto";
-import {UpdateStarshipDto} from "./dto/update-starship.dto";
+import { CreateStarshipDto } from "./dto/create-starship.dto";
+import { UpdateStarshipDto } from "./dto/update-starship.dto";
 
-import {Film} from "../films/entities/film.entity";
+import { Film } from "../films/entities/film.entity";
 
 @Injectable()
 export class StarshipsService {
@@ -23,11 +23,13 @@ export class StarshipsService {
         @InjectRepository(Film)
         private readonly filmsRepository: Repository<Film>,
     ) {}
+
     paginate(options: IPaginationOptions): Promise<Pagination<Starship>> {
         return paginate<Starship>(this.starshipsRepository, options, {
             relations: ['pilots', 'films']
         });
     }
+
     async findOne(id: number) {
         let starship = await this.starshipsRepository.findOne({
             where: {
@@ -38,6 +40,7 @@ export class StarshipsService {
 
         return starship;
     }
+
     async store(data: CreateStarshipDto) {
 
         let starship = await this.starshipsRepository.create(data);
@@ -50,8 +53,11 @@ export class StarshipsService {
 
         starship.films = films;
 
-        return this.starshipsRepository.save(data);
+        await this.starshipsRepository.save(data);
+
+        return true;
     }
+
     async update(id: number, data: UpdateStarshipDto) {
 
         let starship = await this.starshipsRepository.findOne({where: {id: id}, relations: ["films"]})
@@ -66,19 +72,13 @@ export class StarshipsService {
 
         await this.starshipsRepository.save(starship)
 
-        return 'ok';
+        return true;
     }
     async delete(id: number) {
 
-        let starship = await this.starshipsRepository.findOne({
-            where: {
-                id: id
-            }
-        })
-
         await this.starshipsRepository.delete(id);
 
-        return 'ok';
+        return true;
 
     }
 

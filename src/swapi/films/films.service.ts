@@ -1,7 +1,7 @@
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
 
-import {Repository} from "typeorm";
+import { Repository } from "typeorm";
 
 import {
     paginate,
@@ -9,10 +9,11 @@ import {
     IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
-import {Film} from "./entities/film.entity";
+import { Film } from "./entities/film.entity";
 
-import {CreateFilmDto} from "./dto/create-film.dto";
-import {UpdateFilmDto} from "./dto/update-film.dto";
+import { CreateFilmDto } from "./dto/create-film.dto";
+import { UpdateFilmDto } from "./dto/update-film.dto";
+
 @Injectable()
 export class FilmsService {
     constructor(
@@ -47,20 +48,14 @@ export class FilmsService {
 
         await this.filmsRepository.update(id, data);
 
-        return 'ok';
+        return true;
     }
 
     async delete(id: number) {
 
-        let film = await this.filmsRepository.findOne({
-            where: {
-                id: id
-            }
-        });
-
         await this.filmsRepository.delete(id);
 
-        return 'ok';
+        return true;
 
     }
 }

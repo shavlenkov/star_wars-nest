@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
-import {Planet} from "./entities/planet.entity";
+import { Planet } from "./entities/planet.entity";
 
-import {PlanetsController} from "../planets/planets.controller";
-import {PlanetsService} from "../planets/planets.service";
-import {UsersModule} from "../../users/users.module";
+import { PlanetsController } from "./planets.controller";
+import { PlanetsService } from "./planets.service";
+import { UsersModule } from "../../users/users.module";
 
-import {Film} from "../films/entities/film.entity";
+import { Film } from "../films/entities/film.entity";
 
 @Module({
     imports: [UsersModule, TypeOrmModule.forFeature([Planet, Film])],

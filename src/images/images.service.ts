@@ -19,6 +19,8 @@ export class ImagesService {
     constructor(
         @InjectRepository(Image)
         private readonly imagesRepository: Repository<Image>,
+        @InjectRepository(People)
+        private readonly peopleRepository: Repository<People>,
     ) {
         this.s3 = new AWS.S3({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -27,35 +29,43 @@ export class ImagesService {
     }
 
     async addImages(newPeople, files: Array<Express.Multer.File>) {
+        const imagesUrls = await this.uploadToAWS(files)
 
-        let images_arr = []
+        const savedImageRecords = await this.saveRecordsToDB(imagesUrls)
 
-        if(files[0] != null) {
-            for (let i = 0; i < files.length; i++) {
-                const result = await this.s3.upload({
-                    Bucket: process.env.AWS_S3_BUCKET,
-                    Key: files[i].originalname,
-                    Body: files[i].buffer,
-                }).promise();
+        newPeople.images = savedImageRecords;
 
-                images_arr.push({url: result.Location})
+        await this.peopleRepository.save(newPeople)
 
-            }
+
+    }
+
+    private async uploadToAWS(files: Array<Express.Multer.File>) {
+        const promises = files.map(async (file) => {
+            this.s3.upload({
+                Bucket: process.env.AWS_S3_BUCKET,
+                Key: file.originalname,
+                Body: file.buffer,
+            }).promise()
+        })
+        
+        await Promise.all(promises);
+        
+        return promises.map(file => file['url'])
+    }
+    
+    private async saveRecordsToDB(imagesUrls: string[]) {
+        const imagesRecords: Promise<Image>[] = imagesUrls.map(async (url: string) =>  this.imagesRepository.create({url}))
+        
+        await Promise.all(imagesRecords)
+        
+        const savedImagesRecord = [];
+
+        for await (const image of imagesRecords) {
+            savedImagesRecord.push(await this.imagesRepository.save(image))
         }
 
-        let images = await this.imagesRepository
-            .createQueryBuilder()
-            .insert()
-            .into(Image)
-            .values(images_arr)
-            .execute()
-
-        const relation = await this.imagesRepository
-            .createQueryBuilder()
-            .relation(People, 'images')
-            .of(newPeople.id)
-            .add(images);
-
+        return savedImagesRecord;
     }
 
     async deleteImages(urls) {

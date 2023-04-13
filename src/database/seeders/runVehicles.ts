@@ -3,8 +3,8 @@ import { Connection } from "typeorm";
 
 import axios from 'axios';
 
-import {Vehicle} from "../../swapi/vehicles/entities/vehicle.entity";
-import {Film} from "../../swapi/films/entities/film.entity";
+import { Vehicle } from "../../swapi/vehicles/entities/vehicle.entity";
+import { Film } from "../../swapi/films/entities/film.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
 

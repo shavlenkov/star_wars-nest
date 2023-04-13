@@ -1,6 +1,6 @@
-import {ArgumentMetadata, Injectable, NotFoundException, PipeTransform} from '@nestjs/common';
+import { ArgumentMetadata, Injectable, NotFoundException, PipeTransform } from '@nestjs/common';
 
-import {VehiclesService} from "../vehicles.service";
+import { VehiclesService } from "../vehicles.service";
 
 @Injectable()
 export class VehicleExistPipe implements PipeTransform {
@@ -13,4 +13,5 @@ export class VehicleExistPipe implements PipeTransform {
       throw new NotFoundException(`Vehicle with ID ${id} not found`);
     }
   }
+
 }

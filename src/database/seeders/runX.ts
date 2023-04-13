@@ -1,15 +1,14 @@
 import { Factory, Seeder } from "typeorm-seeding";
-import {Connection, In} from "typeorm";
-
-import { People } from "../../swapi/people/entities/people.entity";
+import { Connection, In } from "typeorm";
 
 import axios from 'axios';
 
-import {Planet} from "../../swapi/planets/entities/planet.entity";
-import {Film} from "../../swapi/films/entities/film.entity";
-import {Vehicle} from "../../swapi/vehicles/entities/vehicle.entity";
-import {Specie} from "../../swapi/species/entities/specie.entity";
-import {Starship} from "../../swapi/starships/entities/starship.entity";
+import { People } from "../../swapi/people/entities/people.entity";
+import { Planet } from "../../swapi/planets/entities/planet.entity";
+import { Film } from "../../swapi/films/entities/film.entity";
+import { Vehicle } from "../../swapi/vehicles/entities/vehicle.entity";
+import { Specie } from "../../swapi/species/entities/specie.entity";
+import { Starship } from "../../swapi/starships/entities/starship.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
 
@@ -53,7 +52,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let vehicle_ids = []
 
-                if(vehicle_urls[0] != null) {
+                if(vehicle_urls.length != 0) {
                     vehicle_ids = vehicle_urls.map((url) => {
                         return Number(url.split('https://swapi.dev/api/vehicles/')[1].split('/')[0])
                     })
@@ -61,7 +60,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let vehicles = [];
 
-                if(vehicle_ids[0] != null) {
+                if(vehicle_ids.length != 0) {
                     vehicles = await vehiclesRepository.find({
                         where: {
                             id: In([...vehicle_ids])
@@ -73,7 +72,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let specie_ids = []
 
-                if(specie_urls[0] != null) {
+                if(specie_urls.length != 0) {
                     specie_ids = specie_urls.map((url) => {
                         return Number(url.split('https://swapi.dev/api/species/')[1].split('/')[0])
                     })
@@ -81,7 +80,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let species = [];
 
-                if(specie_ids[0] != null) {
+                if(specie_ids.length != 0) {
                     species = await speciesRepository.find({
                         where: {
                             id: In([...specie_ids])
@@ -93,7 +92,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let starship_ids = []
 
-                if(starship_urls[0] != null) {
+                if(starship_urls.length != 0) {
                     starship_ids = starship_urls.map((url) => {
                         return Number(url.split('https://swapi.dev/api/starships/')[1].split('/')[0])
                     })
@@ -101,7 +100,7 @@ export default class InitialDatabaseSeed implements Seeder {
 
                 let starships = [];
 
-                if(starship_ids[0] != null) {
+                if(starship_ids.length != 0) {
                     starships = await starshipsRepository.find({
                         where: {
                             id: In([...starship_ids])

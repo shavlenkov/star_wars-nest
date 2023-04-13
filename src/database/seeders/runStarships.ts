@@ -1,10 +1,10 @@
 import { Factory, Seeder } from "typeorm-seeding";
-import {Connection, In} from "typeorm";
+import { Connection, In } from "typeorm";
 
 import axios from 'axios';
 
-import {Starship} from "../../swapi/starships/entities/starship.entity";
-import {Film} from "../../swapi/films/entities/film.entity";
+import { Starship } from "../../swapi/starships/entities/starship.entity";
+import { Film } from "../../swapi/films/entities/film.entity";
 
 export default class InitialDatabaseSeed implements Seeder {
 

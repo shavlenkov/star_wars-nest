@@ -4,6 +4,7 @@ import { People } from "../../swapi/people/entities/people.entity";
 
 @Entity('images')
 export class Image {
+
     @PrimaryGeneratedColumn()
     id: number;
 
