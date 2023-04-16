@@ -28,44 +28,49 @@ export class ImagesService {
         });
     }
 
-    async addImages(newPeople, files: Array<Express.Multer.File>) {
-        const imagesUrls = await this.uploadToAWS(files)
 
-        const savedImageRecords = await this.saveRecordsToDB(imagesUrls)
+    private async getArrayImages(files: Array<Express.Multer.File>) {
+        let images_arr = []
 
-        newPeople.images = savedImageRecords;
+        if(files.length != 0) {
+            for (let i = 0; i < files.length; i++) {
+                const result = await this.s3.upload({
+                    Bucket: process.env.AWS_S3_BUCKET,
+                    Key: files[i].originalname,
+                    Body: files[i].buffer,
+                }).promise();
 
-        await this.peopleRepository.save(newPeople)
+                images_arr.push({url: result.Location})
 
-
-    }
-
-    private async uploadToAWS(files: Array<Express.Multer.File>) {
-        const promises = files.map(async (file) => {
-            this.s3.upload({
-                Bucket: process.env.AWS_S3_BUCKET,
-                Key: file.originalname,
-                Body: file.buffer,
-            }).promise()
-        })
-        
-        await Promise.all(promises);
-        
-        return promises.map(file => file['url'])
-    }
-    
-    private async saveRecordsToDB(imagesUrls: string[]) {
-        const imagesRecords: Promise<Image>[] = imagesUrls.map(async (url: string) =>  this.imagesRepository.create({url}))
-        
-        await Promise.all(imagesRecords)
-        
-        const savedImagesRecord = [];
-
-        for await (const image of imagesRecords) {
-            savedImagesRecord.push(await this.imagesRepository.save(image))
+            }
         }
 
-        return savedImagesRecord;
+        return images_arr;
+    }
+
+
+
+
+    async addImages(newPeople, files: Array<Express.Multer.File>) {
+
+
+        let arrImages = await this.getArrayImages(files);
+
+
+        let images = await this.imagesRepository
+            .createQueryBuilder()
+            .insert()
+            .into(Image)
+            .values(arrImages)
+            .execute()
+
+
+        const relation = await this.imagesRepository
+            .createQueryBuilder()
+            .relation(People, 'images')
+            .of(newPeople.id)
+            .add(arrImages);
+
     }
 
     async deleteImages(urls) {

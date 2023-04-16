@@ -19,10 +19,13 @@ import { Film } from "../films/entities/film.entity";
 import { Specie } from "../species/entities/specie.entity";
 import { Starship } from "../starships/entities/starship.entity";
 import { Vehicle } from "../vehicles/entities/vehicle.entity";
+import { Planet } from "../planets/entities/planet.entity";
 
 @Injectable()
 export class PeopleService {
     constructor(
+        @InjectRepository(Planet)
+        private readonly planetsRepository: Repository<Planet>,
         @InjectRepository(People)
         private readonly peopleRepository: Repository<People>,
         @InjectRepository(Film)
@@ -59,35 +62,43 @@ export class PeopleService {
 
         const films = await this.filmsRepository.find({
             where: {
-                id: In([...data.filmIds])
+                id: In([1,2,3])
             }
         })
 
        const species = await this.speciesRepository.find({
            where: {
-               id: In([...data.specieIds])
+               id: In([1,2,3])
            }
        })
 
        const starships = await this.starshipsRepository.find({
            where: {
-               id: In([...data.starshipIds])
+               id: In([1,2,3])
            }
        })
        const vehicles = await this.vehiclesRepository.find({
            where: {
-               id: In([...data.vehicleIds])
+               id: In([1,2,3])
            }
        })
+
+       const homeworld = await this.planetsRepository.findOne({
+           where: {
+               id: 1
+           }
+       })
+
+
+       people.homeworld = homeworld
 
        people.films = films;
        people.species = species;
        people.starships = starships;
        people.vehicles = vehicles;
 
-       await this.peopleRepository.save(people);
+       return this.peopleRepository.save(people);
 
-       return true;
     }
 
     async update(id: number, data: UpdatePeopleDto) {
@@ -116,6 +127,7 @@ export class PeopleService {
                 id: In([...data.starshipIds])
             }
         })
+
         const vehicles = await this.vehiclesRepository.find({
             where: {
                 id: In([...data.vehicleIds])

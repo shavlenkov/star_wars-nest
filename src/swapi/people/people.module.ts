@@ -13,9 +13,12 @@ import { Film } from "../films/entities/film.entity";
 import { Specie } from "../species/entities/specie.entity";
 import { Starship } from "../starships/entities/starship.entity";
 import { Vehicle } from "../vehicles/entities/vehicle.entity";
+import { Planet } from "../planets/entities/planet.entity";
+
+
 
 @Module({
-    imports: [UsersModule, ImagesModule,TypeOrmModule.forFeature([People, Film, Specie, Starship, Vehicle])],
+    imports: [UsersModule, ImagesModule,TypeOrmModule.forFeature([People, Planet, Film, Specie, Starship, Vehicle])],
     controllers: [PeopleController],
     providers: [PeopleService],
 })

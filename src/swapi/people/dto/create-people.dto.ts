@@ -35,19 +35,4 @@ export class CreatePeopleDto {
     @IsNotEmpty()
     url: string
 
-    @IsNotEmpty()
-    homeworldId: number;
-
-    @IsNotEmpty()
-    filmIds: Array<number>
-
-    @IsNotEmpty()
-    specieIds: Array<number>
-
-    @IsNotEmpty()
-    starshipIds: Array<number>
-
-    @IsNotEmpty()
-    vehicleIds: Array<number>
-
 }
